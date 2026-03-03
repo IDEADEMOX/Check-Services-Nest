@@ -3,6 +3,7 @@ import { RegisterEntity } from './entities/register.entity';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { RegisterDto } from './dto/register.dto';
+import { BcryptUtil } from '@/utils/bcrypt.util';
 
 @Injectable()
 export class RegisterService {
@@ -20,6 +21,15 @@ export class RegisterService {
     if (existingUser) {
       throw new Error('用户名已存在');
     }
-    return this.registerRepository.save(registerDto);
+    // 密码加密
+    const encryptedPassword = await BcryptUtil.encrypt(registerDto.password);
+    console.log(encryptedPassword);
+    // 用户
+    const user = {
+      ...registerDto,
+      password: encryptedPassword,
+    };
+    // 保存用户
+    return this.registerRepository.save(user);
   }
 }
