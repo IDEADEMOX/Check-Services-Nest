@@ -10,4 +10,7 @@ export class RegisterEntity {
 
   @Column()
   password: string;
+
+  @Column()
+  email: string;
 }

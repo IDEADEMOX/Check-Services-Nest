@@ -9,4 +9,8 @@ export class RegisterDto {
   @IsString({ message: '密码必须是字符串' })
   @MinLength(6, { message: '密码长度不能小于6位' })
   password: string;
+
+  @IsNotEmpty({ message: '邮箱不能为空' })
+  @IsString({ message: '邮箱必须是字符串' })
+  email: string;
 }
