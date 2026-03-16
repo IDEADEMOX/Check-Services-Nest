@@ -1,5 +1,9 @@
 import crypto from 'crypto';
 
+type payloadType = {
+  exp: number;
+};
+
 export class SimpleJWT {
   // 密钥
   private secret: string;
@@ -32,7 +36,7 @@ export class SimpleJWT {
   }
 
   // 生成JWT
-  signToken(payload: string, expiresIn: string = '1h') {
+  signToken(payload: payloadType, expiresIn: string = '1h') {
     const header = { alg: 'HS256', typ: 'JWT' };
 
     // 添加过期时间
@@ -62,7 +66,9 @@ export class SimpleJWT {
     }
 
     // 解码payload
-    const payload = JSON.parse(this.base64urlDecode(payloadBase64));
+    const payload = JSON.parse(
+      this.base64urlDecode(payloadBase64),
+    ) as payloadType;
 
     // 验证过期时间
     if (payload.exp < Math.floor(Date.now() / 1000)) {
@@ -73,7 +79,7 @@ export class SimpleJWT {
   }
 
   // 解析过期时间
-  parseExpirationTime(exp: number) {
+  parseExpirationTime(exp: string) {
     const unit = exp.slice(-1);
     const value = parseInt(exp.slice(0, -1));
 

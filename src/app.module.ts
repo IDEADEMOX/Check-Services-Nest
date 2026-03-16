@@ -4,7 +4,7 @@ import { AppService } from './app.service';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { RegisterModule } from './api/register/register.module';
-import { LoginModule } from './api/login/login.module';
+import { UsersModule } from './api/users/users.module';
 
 @Module({
   imports: [
@@ -30,7 +30,7 @@ import { LoginModule } from './api/login/login.module';
       inject: [ConfigService],
     }),
     RegisterModule,
-    LoginModule,
+    UsersModule,
   ],
   controllers: [AppController],
   providers: [AppService],

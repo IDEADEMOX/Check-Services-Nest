@@ -6,7 +6,7 @@ import { LoginDto } from '@/dto/login.dto';
 import { BcryptUtil } from '@/utils/bcrypt.util';
 
 @Injectable()
-export class LoginService {
+export class UsersService {
   constructor(
     @InjectRepository(UserEntity)
     private readonly userRepository: Repository<UserEntity>,
