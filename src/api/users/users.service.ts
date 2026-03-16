@@ -31,4 +31,15 @@ export class UsersService {
     }
     return user;
   }
+
+  // 根据ID查找用户
+  async findById(id: number): Promise<UserEntity> {
+    const user = await this.userRepository.findOne({
+      where: { id },
+    });
+    if (!user) {
+      throw new Error('用户不存在');
+    }
+    return user;
+  }
 }
