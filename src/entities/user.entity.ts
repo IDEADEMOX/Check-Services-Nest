@@ -14,9 +14,9 @@ export class UserEntity {
   @Column()
   email: string;
 
-  @Column()
+  @Column({ default: '' })
   refreshToken: string;
 
-  @Column()
+  @Column({ default: new Date() })
   refreshTokenExpires: Date;
 }

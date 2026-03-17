@@ -32,7 +32,7 @@ export class AuthController {
     // 存到cookie
     res.cookie('accessToken', accessToken, {
       httpOnly: true,
-      secure: true,
+      secure: process.env.NODE_ENV === 'production',
       sameSite: 'strict',
     });
     return other;

@@ -10,6 +10,11 @@ export class UsersService {
     private readonly userRepository: Repository<UserEntity>,
   ) {}
 
+  // 获取所有用户
+  async findAll(): Promise<UserEntity[]> {
+    return this.userRepository.find();
+  }
+
   // 根据ID查找用户
   async findById(id: number): Promise<UserEntity> {
     const user = await this.userRepository.findOne({

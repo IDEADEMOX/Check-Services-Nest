@@ -13,6 +13,7 @@ async function bootstrap() {
     }),
   );
   app.use(cookieParser()); // 解析 cookie
+
   await app.listen(process.env.PORT ?? 3000);
 }
 bootstrap();
