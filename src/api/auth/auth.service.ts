@@ -25,12 +25,12 @@ export class AuthService {
       user.password,
     );
 
-    // 生成访问令牌
-    const { accessToken, refreshToken } = await this.generateAccessToken(user);
-
     if (!isPasswordValid) {
       throw new Error('密码错误');
     }
+
+    // 生成访问令牌
+    const { accessToken, refreshToken } = await this.generateAccessToken(user);
 
     const result = {
       ...user,

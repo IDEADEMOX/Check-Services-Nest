@@ -20,6 +20,7 @@ export class AuthMiddleware implements NestMiddleware {
       const excludedPaths = ['/auth/login', '/api/register'];
       if (excludedPaths.some((path) => req.baseUrl.startsWith(path))) {
         next();
+        return;
       }
 
       // Extract token from cookie

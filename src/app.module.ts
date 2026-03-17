@@ -7,6 +7,8 @@ import { RegisterModule } from './api/register/register.module';
 import { UsersModule } from './api/users/users.module';
 import { AuthModule } from './api/auth/auth.module';
 import { AuthMiddleware } from './middleware/auth.middleware';
+import { APP_INTERCEPTOR } from '@nestjs/core'; // 引入全局装饰器
+import { ResultInterceptor } from '@/interceptor/result.interceptor'; // 引入全局拦截器
 
 @Module({
   imports: [
@@ -36,7 +38,14 @@ import { AuthMiddleware } from './middleware/auth.middleware';
     AuthModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [
+    AppService,
+    // 全局注册响应拦截器
+    {
+      provide: APP_INTERCEPTOR,
+      useClass: ResultInterceptor,
+    },
+  ],
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
