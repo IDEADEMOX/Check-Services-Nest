@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { UserEntity } from '@/entities/user.entity';
+import { UpdateUserDto } from '@/dto/update-user.dto';
 
 @Injectable()
 export class UsersService {
@@ -72,14 +73,14 @@ export class UsersService {
   }
 
   // 更新用户
-  async update(user: UserEntity): Promise<UserEntity> {
-    const userInfo = await this.findById(user.id);
-    if (!userInfo) {
+  async update(id: number, userInfo: UpdateUserDto): Promise<UserEntity> {
+    const user = await this.findById(id);
+    if (!user) {
       throw new Error('用户不存在');
     }
     return this.userRepository.save({
-      ...userInfo,
       ...user,
+      ...userInfo,
     });
   }
 

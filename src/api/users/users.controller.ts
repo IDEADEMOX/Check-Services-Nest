@@ -2,6 +2,7 @@ import { Body, Controller, Post, Get } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { UserEntity } from '@/entities/user.entity';
 import { RegisterDto } from '@/dto/register.dto';
+import { UpdateUserDto } from '@/dto/update-user.dto';
 import { RegisterService } from '@/api/register/register.service';
 
 @Controller('users')
@@ -25,9 +26,11 @@ export class UsersController {
 
   // 更新用户
   @Post('update')
-  async update(@Body() userInfo: UserEntity): Promise<UserEntity> {
+  async update(
+    @Body() userInfo: UpdateUserDto & { id: number },
+  ): Promise<UserEntity> {
     console.log('更新用户', userInfo);
-    return this.usersService.update(userInfo);
+    return this.usersService.update(userInfo.id, userInfo);
   }
 
   // 删除用户
