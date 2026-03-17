@@ -70,4 +70,25 @@ export class UsersService {
       user.refreshTokenExpires = undefined;
     }
   }
+
+  // 更新用户
+  async update(user: UserEntity): Promise<UserEntity> {
+    const userInfo = await this.findById(user.id);
+    if (!userInfo) {
+      throw new Error('用户不存在');
+    }
+    return this.userRepository.save({
+      ...userInfo,
+      ...user,
+    });
+  }
+
+  // 删除用户
+  async delete(id: number): Promise<void> {
+    const user = await this.findById(id);
+    if (!user) {
+      throw new Error('用户不存在');
+    }
+    await this.userRepository.delete(id);
+  }
 }

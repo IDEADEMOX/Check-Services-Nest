@@ -8,5 +8,6 @@ import { UserEntity } from '@/entities/user.entity';
   controllers: [RegisterController],
   imports: [TypeOrmModule.forFeature([UserEntity])],
   providers: [RegisterService],
+  exports: [RegisterService],
 })
 export class RegisterModule {}
