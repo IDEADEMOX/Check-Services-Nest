@@ -13,4 +13,10 @@ export class UserEntity {
 
   @Column()
   email: string;
+
+  @Column()
+  refreshToken: string;
+
+  @Column()
+  refreshTokenExpires: Date;
 }
