@@ -16,7 +16,7 @@ export class JwtHelperService {
         ? this.configService.get('JWT_ACCESS_SECRET') || 'access-secret'
         : this.configService.get('JWT_REFRESH_SECRET') || 'refresh-secret';
 
-    const expiresIn = type === 'access' ? '15m' : '7d';
+    const expiresIn = type === 'access' ? '1m' : '7d';
 
     return this.jwtService.sign(payload, { secret, expiresIn });
   }

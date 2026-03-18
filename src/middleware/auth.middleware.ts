@@ -28,7 +28,12 @@ export class AuthMiddleware implements NestMiddleware {
 
     try {
       // Exclude login and register endpoints
-      const excludedPaths = ['/auth/login', '/api/register', '/auth/logout'];
+      const excludedPaths = [
+        '/auth/login',
+        '/api/register',
+        '/auth/logout',
+        '/auth/refresh',
+      ];
       if (excludedPaths.some((path) => req.baseUrl.startsWith(path))) {
         next();
         return;
