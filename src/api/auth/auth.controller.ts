@@ -10,9 +10,7 @@ import { LoginDto } from '@/dto/login.dto';
 import { UserEntity } from '@/entities/user.entity';
 import { AuthService } from '../auth/auth.service';
 import { RefreshTokenGuard } from '../auth/guards/refresh-token.guard';
-import { AccessTokenGuard } from '../auth/guards/access-token.guard';
 import { RefreshTokenDto } from '@/dto/refresh-token.dto';
-import { CurrentUser } from '@/decorators/current-user.decorator';
 import type { Response } from 'express';
 
 @Controller('auth')
@@ -47,15 +45,16 @@ export class AuthController {
 
   // 退出登录
   @Post('logout')
-  @UseGuards(AccessTokenGuard)
-  async logout(@CurrentUser() user: UserEntity) {
+  async logout(
+    @Body() user: UserEntity,
+    @Res({ passthrough: true }) res: Response,
+  ) {
+    // 清除cookie
+    res.clearCookie('accessToken', {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'strict',
+    });
     return this.authService.logout(user.id);
-  }
-
-  // 获取用户信息
-  @Post('profile')
-  @UseGuards(AccessTokenGuard)
-  getProfile(@CurrentUser() user: UserEntity) {
-    return user;
   }
 }

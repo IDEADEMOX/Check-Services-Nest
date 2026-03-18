@@ -15,9 +15,20 @@ export class AuthMiddleware implements NestMiddleware {
   ) {}
 
   async use(req: Request, res: Response, next: NextFunction) {
+    // Clear expired token cookie if it exists
+    const clearExpiredTokenCookie = () => {
+      if (req.cookies?.accessToken) {
+        res.clearCookie('accessToken', {
+          httpOnly: true,
+          secure: process.env.NODE_ENV === 'production',
+          sameSite: 'strict',
+        });
+      }
+    };
+
     try {
       // Exclude login and register endpoints
-      const excludedPaths = ['/auth/login', '/api/register'];
+      const excludedPaths = ['/auth/login', '/api/register', '/auth/logout'];
       if (excludedPaths.some((path) => req.baseUrl.startsWith(path))) {
         next();
         return;
@@ -27,6 +38,7 @@ export class AuthMiddleware implements NestMiddleware {
       const token = req.cookies?.accessToken as string;
 
       if (!token) {
+        clearExpiredTokenCookie();
         throw new UnauthorizedException('认证失败');
       }
 
@@ -37,6 +49,7 @@ export class AuthMiddleware implements NestMiddleware {
       const user = await this.usersService.findById(payload.sub);
 
       if (!user) {
+        clearExpiredTokenCookie();
         throw new UnauthorizedException('认证失败');
       }
 
@@ -45,6 +58,7 @@ export class AuthMiddleware implements NestMiddleware {
 
       next();
     } catch {
+      clearExpiredTokenCookie();
       throw new UnauthorizedException('认证失败');
     }
   }

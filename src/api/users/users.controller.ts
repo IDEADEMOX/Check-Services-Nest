@@ -38,4 +38,11 @@ export class UsersController {
   async delete(@Body() body: { id: number }): Promise<void> {
     return this.usersService.delete(body.id);
   }
+
+  // 获取用户信息
+  @Post('profile')
+  getProfile(@Body() user: UserEntity) {
+    const userInfo = this.usersService.findById(user.id);
+    return userInfo;
+  }
 }

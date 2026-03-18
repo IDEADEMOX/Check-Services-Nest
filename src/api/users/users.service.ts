@@ -68,7 +68,7 @@ export class UsersService {
       await this.findById(userId);
     if (user) {
       user.refreshToken = undefined;
-      user.refreshTokenExpires = undefined;
+      user.refreshTokenExpires = new Date(0);
     }
   }
 
