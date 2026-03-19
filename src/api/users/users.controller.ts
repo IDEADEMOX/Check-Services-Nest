@@ -1,11 +1,13 @@
-import { Body, Controller, Post, Get } from '@nestjs/common';
+import { Body, Controller, Post, Get, UseGuards } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { UserEntity } from '@/entities/user.entity';
 import { RegisterDto } from '@/dto/register.dto';
 import { UpdateUserDto } from '@/dto/update-user.dto';
 import { RegisterService } from '@/api/register/register.service';
+import { AuthGuard } from '@/guard/auth.guard';
 
 @Controller('users')
+@UseGuards(AuthGuard)
 export class UsersController {
   constructor(
     private readonly usersService: UsersService,

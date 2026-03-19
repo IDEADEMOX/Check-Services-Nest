@@ -1,8 +1,17 @@
-import { Body, Controller, HttpCode, Post, Res, Session } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  HttpCode,
+  Post,
+  Res,
+  Session,
+  UseGuards,
+} from '@nestjs/common';
 import { LoginDto } from '@/dto/login.dto';
 import { UserEntity } from '@/entities/user.entity';
 import { AuthService } from '../auth/auth.service';
 import type { Response } from 'express';
+import { AuthGuard } from '@/guard/auth.guard';
 
 @Controller('auth')
 export class AuthController {
@@ -32,12 +41,14 @@ export class AuthController {
 
   // 刷新token
   @Post('refresh')
+  @UseGuards(AuthGuard)
   async refreshTokens(
     @Res({ passthrough: true }) res: Response,
     @Session() session: Record<string, any>,
   ) {
     // 从session中获取用户信息
     const { user } = session as { user: UserEntity };
+    // 刷新token
     const { accessToken: newAccessToken } =
       await this.authService.refreshTokens(user.refreshToken);
     // 存到cookie
@@ -51,6 +62,7 @@ export class AuthController {
 
   // 退出登录
   @Post('logout')
+  @UseGuards(AuthGuard)
   async logout(
     @Body() user: UserEntity,
     @Res({ passthrough: true }) res: Response,
