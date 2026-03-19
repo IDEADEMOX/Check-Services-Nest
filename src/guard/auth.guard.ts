@@ -40,7 +40,7 @@ export class AuthGuard implements CanActivate {
         url,
         Number(timestamp),
         nonce,
-        request.body,
+        request.body || {},
       ),
       SIGNATURE_KEY,
     ).toString();

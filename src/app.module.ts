@@ -10,6 +10,7 @@ import { AuthMiddleware } from './middleware/auth.middleware';
 import { APP_INTERCEPTOR } from '@nestjs/core'; // 引入全局装饰器
 import { ResultInterceptor } from '@/interceptor/result.interceptor'; // 引入全局拦截器
 import { ThrottlerModule } from '@nestjs/throttler';
+import { UploadModule } from './api/upload/upload.module';
 
 @Module({
   imports: [
@@ -46,6 +47,7 @@ import { ThrottlerModule } from '@nestjs/throttler';
     RegisterModule,
     UsersModule,
     AuthModule,
+    UploadModule,
   ],
   controllers: [AppController],
   providers: [
